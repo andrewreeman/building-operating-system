@@ -1,24 +1,25 @@
-;[org 0x7c00]
 
-mov ah, 0x0e ; tty
+mov bx, 60
+cmp bx, 4
+jle set_a
 
-mov bp, 0x8000
-mov sp, bp
+cmp bx, 40
+jl set_b
 
-push 'A'
-push 'B'
-push 'C'    
+mov al, 'C'
+jmp end
 
-pop bx
-mov al, bl
-int 0x10
+set_a:
+    mov al, 'A'
+    jmp end
 
-pop bx
-mov al, bl
-int 0x10
+set_b:
+    mov al, 'B'
+    jmp end
 
-mov al, [0x7ffe]
-int 0x10
+end:
+    mov ah, 0x0e
+    int 0x10
 
 jmp $ ;inf loop
 
