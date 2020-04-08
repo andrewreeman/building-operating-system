@@ -1,27 +1,20 @@
+[org 0x7c00]
 
-mov bx, 60
-cmp bx, 4
-jle set_a
+mov bx, HELLO_MSG
+call print_string
 
-cmp bx, 40
-jl set_b
-
-mov al, 'C'
-jmp end
-
-set_a:
-    mov al, 'A'
-    jmp end
-
-set_b:
-    mov al, 'B'
-    jmp end
-
-end:
-    mov ah, 0x0e
-    int 0x10
+mov bx, GOODBYE_MSG
+call print_string
 
 jmp $ ;inf loop
+
+%include "print_string.asm"
+
+HELLO_MSG:
+    db 'Hello, world!', 0
+
+GOODBYE_MSG:
+    db 'Goodbye', 0
 
 times 510-($-$$) db 0
 
