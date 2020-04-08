@@ -1,23 +1,24 @@
-[org 0x7c00]
+mov ah, 0x0e
 
-mov bx, HELLO_MSG
-call print_string
+mov al, [the_secret]
+int 0x10
 
-mov bx, GOODBYE_MSG
-call print_string
+mov bx, 0x7c0
+mov ds, bx
+mov al, [the_secret]
+int 0x10
 
-mov dx, 0x1fb6
-call print_hex
+mov al, [es:the_secret]
+int 0x10
 
+mov bx, 0x7c0
+mov es, bx
+mov al, [es:the_secret]
+int 0x10
 jmp $ ;inf loop
 
-%include "print_string.asm"
-
-HELLO_MSG:
-    db 'Hello, world!', 0
-
-GOODBYE_MSG:
-    db 'Goodbye', 0
+the_secret:
+    db "X"
 
 times 510-($-$$) db 0
 
