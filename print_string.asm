@@ -1,7 +1,25 @@
 print_hex:
-    pusha    
-    call put_first_nibble    
-    call put_second_nibble
+    pusha 
+    
+    mov bh, dh    
+    shr bh, 4    
+    mov cl, 2    
+    call print_hex_put_nibble
+
+    mov bh, dh    
+    and bh, 0x0f
+    mov cl, 3     
+    call print_hex_put_nibble
+
+    mov bh, dl
+    shr bh, 4
+    mov cl, 4
+    call print_hex_put_nibble
+
+    mov bh, dl
+    and bh, 0x0f
+    mov cl, 5
+    call print_hex_put_nibble
 
     mov bx, HEX_OUT
     call print_string   
@@ -9,56 +27,27 @@ print_hex:
     popa
     ret
 
-put_first_nibble:
-    pusha
-    ; put first nibble
-    mov bh, dh    
-    shr bh, 4    
+print_hex_put_nibble:
+    pusha    
 
     cmp bh, 0x9
-    jg letter_mask        
+    jg print_hex_letter_mask
 
-    number_mask:
+    print_hex_number_mask:
         or bh, 0x30    
-        jmp insert_char
+        jmp print_hex_insert_char
     
-    letter_mask:
+    print_hex_letter_mask:
         sub bh, 9
         or bh, 0x60            
 
-    insert_char:
-    mov al, bh
-    mov [HEX_OUT+2], al   
+    print_hex_insert_char:
+        mov al, bh
+        mov bx, HEX_OUT
+        add bl, cl
+        mov [bx], al
     popa
     ret 
-
-put_second_nibble:
-     pusha
-    ; put second nibble
-    mov bh, dh    
-    and bh, 0x0f
-    mov cl, 3
-
-    cmp bh, 0x9
-    jg letter_mask_2 
-
-    number_mask_2:
-        or bh, 0x30    
-        jmp insert_char_2
-    
-    letter_mask_2:
-        sub bh, 9
-        or bh, 0x60            
-
-    insert_char_2:
-    mov al, bh
-    mov bx, HEX_OUT
-    add bl, cl
-    mov [bx], al
-    popa
-    ret 
-
-
 
 
 
