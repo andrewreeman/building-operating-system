@@ -1,3 +1,13 @@
+print_hex:
+    pusha
+    
+
+    mov bx, HEX_OUT
+    call print_string   
+
+    popa
+    ret
+
 print_string:
     pusha ; store all register values on the stack
 
@@ -11,3 +21,5 @@ print_string:
         jne print_loop
     popa ; load all register values from the stack back into the registers
     ret ; return to ip address that should now be on the stack
+
+HEX_OUT: db '0x0000', 0
