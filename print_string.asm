@@ -1,6 +1,24 @@
 print_hex:
     pusha
+
+    ; put first nibble
+    mov bh, dh    
+    shr bh, 4    
+
+    cmp bh, 0x9
+    jg letter_mask
+
+    number_mask:
+        or bh, 0x30    
+        jmp insert_char
     
+    letter_mask:
+        sub bh, 9
+        or bh, 0x60            
+
+    insert_char:
+    mov al, bh
+    mov [HEX_OUT+2], al    
 
     mov bx, HEX_OUT
     call print_string   
