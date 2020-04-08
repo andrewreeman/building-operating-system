@@ -1,7 +1,8 @@
 disk_load:
-    push dx 
+    push dx     
 
     mov ah, 0x02 ; BIOS read sector function
+    
     mov al, dh ; Read DH sectors
     mov ch, 0x00 ; Read cylinder 0
     mov dh, 0x00 ; Select head 0
@@ -16,11 +17,9 @@ disk_load:
     jne disk_error
     ret
 
-
-
 disk_error:
     mov bx, DISK_ERROR_MSG
     call print_string
     jmp $
 
-DISK_ERROR_MSG: db "Disk eead error!", 0
+DISK_ERROR_MSG: db "Disk read error!", 0
