@@ -1,32 +1,29 @@
 [org 0x7c00]
-     mov [BOOT_DRIVE], dl ; store bootdrive in BOOT_DRIVE
+    mov bp, 0x9000 ;set stack
+    mov sp, bp
 
-    mov bp, 0x8000 ; 
-    mov sp, bp ; set the stack safetly out of the way
+    mov bx, MSG_REAL_MODE
+    call print_string
 
-    mov bx, 0x9000 ; load 5 sectors to 0x0000:0x9000 from the boot disk
-
-    mov dh, 2
-    call disk_load
-     mov dl, [BOOT_DRIVE]
-
-    mov dx, [0x9000] ; print first loaded word stored at address 0x9000
-    call print_hex
-
-    mov dx, [0x9000 + 512] ; print first loaded word in the next segment
-    call print_hex
+    call switch_to_pm ; should never return from here
 
     jmp $ 
 
 %include "../print/print_string.asm"
-%include "../hex/print_hex.asm"
-%include "disk_load.asm"
+;%include "../hex/print_hex.asm"
+%include "gdt.asm"
+%include "../print/print_string_pm.asm"
+%include "switch_to_pm.asm"
 
-BOOT_DRIVE: db 0
+[bits 32]
+BEGIN_PM:
+    mov ebx, MSG_PROT_MODE
+    call print_string_pm
+
+    jmp $
+
+MSG_REAL_MODE: db "Started in 16 bit real mode", 0
+MSG_PROT_MODE: db "Succesfully landed in 32 bit protected mode!", 0
 
 times 510-($-$$) db 0
 dw 0xaa55
-
-; test data to populate a sector
-times 256 dw 0xdada
-times 256 dw 0xface
