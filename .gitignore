@@ -1,1 +1,4 @@
 *.bin
+*.o
+os-image
+.vagrant
