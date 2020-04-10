@@ -1,34 +1,34 @@
+# Automatically generate lists of sources using wildcards .
+C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
+HEADERS = $(wildcard kernel/*.h drivers/*.h)
+# TODO : Make sources dep on all header files .
+# Convert the *.c filenames to *.o to give a list of object files to build
+OBJ = ${C_SOURCES:.c=.o}
 
-
-# nasm -f bin boot_sector.asm -o boot_sector.bin
-
-# gcc -ffreestanding -c kernel.c -o kernel.o
-
-# ld -o kernel.bin -Ttext 0x1000 kernel_entry.o kernel.o --oformat binary
-
-# cat boot_sector.bin kernel.bin > os-image
 all: os-image
 
+debug:
+	echo ${OBJ}
 
-
-os-image: boot_sector.bin kernel.bin
+os-image: boot/boot_sector.bin kernel.bin
 	cat $^ > $@
 
-kernel.bin: kernel_entry.o kernel.o
+kernel.bin: kernel/kernel_entry.o ${OBJ}
 	ld -o kernel.bin -Ttext 0x1000 $^ --oformat binary
 
-kernel.o: kernel/kernel.c
+%.o: %.c ${HEADERS}
 	gcc -ffreestanding -c $< -o $@
 
-kernel_entry.o: kernel/kernel_entry.asm
-	nasm $< -f elf -o $@	
+%.o: %.asm
+	nasm $< -f elf -o $@
 
-boot_sector.bin: boot/boot_sector.asm
-	nasm -f bin $< -o $@
+%.bin : %.asm
+	nasm $< -f bin -I ’../../16 bit /’ -o $@
 
 # utilities
 clean: 
 	rm *.o *.bin os-image
+	rm kernel/*.o boot/*.bin drivers/*.o
 
-kernel . dis : kernel . bin
+kernel.dis : kernel.bin
 	ndisasm -b 32 $ < > $@
