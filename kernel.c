@@ -1,6 +1,6 @@
 
-void some_function() {
-
+void some_function(char* video_memory) {
+    *video_memory = 'Y';
 }
 
 
@@ -9,5 +9,5 @@ void main() {
 
     // Make the first Char an X
     *video_memory = 'X';
-    some_function();
+    some_function(video_memory);
 }
