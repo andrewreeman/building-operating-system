@@ -1,13 +1,10 @@
-
-void some_function(char* video_memory) {
-    *video_memory = 'Y';
-}
-
+#include "../drivers/screen.h"
 
 void main() {
-    char* video_memory = (char*)0xb8000;
-
-    // Make the first Char an X
-    *video_memory = 'X';
-    some_function(video_memory);
+    clear_screen();
+    kprint_at("X", 1, 6);
+    kprint_at("This text spans multiple lines", 75, 10);
+    kprint_at("There is a line\nbreak", 0, 20);
+    kprint("There is a line\nbreak");
+    kprint_at("What happens when we run out of space?", 45, 24);
 }
