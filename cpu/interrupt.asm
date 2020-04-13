@@ -1,4 +1,5 @@
 [extern isr_handler]
+[extern irq_handler]
 
 isr_common_stub:
     pusha
