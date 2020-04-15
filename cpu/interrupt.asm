@@ -35,7 +35,13 @@ irq_common_stub:
 
     call irq_handler
 
-    pop ebx ; Different from isr code
+    ; this was the original code. I don't understand why we pop ebx and not restore the state using eax?
+    ; pop ebx ; Different from isr code
+    ; mov ds, bx
+    ; mov es, bx
+    ; mov fs, bx
+    ; mov gs, bx
+    pop eax
     mov ds, ax
     mov es, ax
     mov fs, ax
