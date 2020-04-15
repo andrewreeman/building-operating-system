@@ -1,3 +1,4 @@
+#include "kernel.h"
 #include "../drivers/screen.h"
 #include "../drivers/keyboard.h"
 #include "../cpu/isr.h"
@@ -6,9 +7,19 @@
 
 void main() {
     isr_install();
+    irq_install(); 
+    
+    kprint("Type something, it will go through the kernel\n"
+        "Type END to halt the CPU\n> ");
+}
 
-    asm volatile("sti");
-    init_timer(50);    
+void user_input(char* input) {
+    if(strcmp(input, "END") == 0) {
+        kprint("Stopping CPU");
+        asm volatile("hlt");
+    }
 
-    init_keyboard();
+    kprint("You said: ");
+    kprint(input);
+    kprint("\n>");
 }
