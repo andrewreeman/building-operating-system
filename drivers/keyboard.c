@@ -3,12 +3,15 @@
 #include "../cpu/isr.h"
 #include "screen.h"
 #include "ports.h"
-#include "../kernel/util.h"
+#include "../libc/string.h"
+#include "../libc/memory.h"
+
+void print_letter(u8 scancode);
 
 static void keyboard_callback(registers_t reg) {
     u8 scancode = port_byte_in(0x60);
     char sc_ascii[4];
-    int_to_ascii(scancode, sc_ascii);
+    int_to_ascii((int)scancode, sc_ascii);
     kprint("Keyboard scancode: ");
     kprint(sc_ascii);
     kprint(", ");

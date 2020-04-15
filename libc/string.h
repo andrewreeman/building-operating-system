@@ -9,5 +9,4 @@ void append(char n, char str[]);
 int strcmp(char s1[], char s2[]);
 
 
-
 #endif

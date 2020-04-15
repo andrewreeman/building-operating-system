@@ -21,7 +21,6 @@ void reverse(char str[]) {
         str[i] = str[j];
         str[j] = c;
     }
-
 }
 
 int strlen(char str[]) {
