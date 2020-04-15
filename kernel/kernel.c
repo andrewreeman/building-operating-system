@@ -17,6 +17,23 @@ void user_input(char* input) {
     if(strcmp(input, "END") == 0) {
         kprint("Stopping CPU");
         asm volatile("hlt");
+        return;
+    }
+    else if(strcmp(input, "PAGE") == 0) {
+        u32 phys_address;
+        u32 page = kmalloc(1000, 1, &phys_address);
+
+        char page_str[16] = "";
+        hex_to_ascii(page, page_str);
+
+        char phys_str[16] = "";
+        hex_to_ascii(phys_address, phys_str);
+
+        kprint("Page: ");
+        kprint(page_str);
+        kprint(", physical address: ");
+        kprint(phys_str);
+        kprint("\n");
     }
 
     kprint("You said: ");
