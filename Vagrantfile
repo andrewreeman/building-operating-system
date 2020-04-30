@@ -5,6 +5,10 @@ export PATH="$PREFIX/bin:$PATH"
 
 sudo apt-get update
 
+# install nasm assembler
+sudo apt-get install -y nasm
+
+
 # mkdir /tmp/src
 # cd /tmp/src
 # curl -O http://ftp.gnu.org/gnu/binutils/binutils-2.24.tar.gz # If the link 404's, look for a more recent version

@@ -23,12 +23,13 @@ kernel.bin: kernel/kernel_entry.o ${OBJ}
 	nasm $< -f elf -o $@
 
 %.bin : %.asm
-	nasm $< -f bin -I ’../../16 bit /’ -o $@
+	#nasm $< -f bin -I ’../../16 bit /’ -o $@
+	nasm $< -f bin -o $@
 
 # utilities
 clean: 
-	rm *.o *.bin os-image
-	rm kernel/*.o boot/*.bin drivers/*.o cpu/*.o
+	rm -f *.o *.bin os-image
+	rm -f kernel/*.o boot/*.bin drivers/*.o cpu/*.o
 
 kernel.dis : kernel.bin
 	ndisasm -b 32 $ < > $@
